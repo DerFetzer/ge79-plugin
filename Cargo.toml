@@ -1,0 +1,31 @@
+[package]
+name = "ge79_plugin"
+version = "0.1.0"
+edition = "2021"
+authors = ["DerFetzer <kontakt@der-fetzer.de>"]
+license = "GPL-3.0-or-later"
+homepage = "https://youtube.com/watch?v=dJYB02J4a2w"
+description = "A plugin recreating the GE 79 overtone synthesizer"
+
+[workspace]
+members = ["xtask"]
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+biquad = "0.4.2"
+# Remove the `assert_process_allocs` feature to allow allocations on the audio
+# thread in debug builds.
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", features = ["assert_process_allocs", "standalone"] }
+nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug.git" }
+realfft = "3.3.0"
+
+[profile.release]
+lto = "thin"
+strip = "symbols"
+
+[profile.profiling]
+inherits = "release"
+debug = true
+strip = "none"
